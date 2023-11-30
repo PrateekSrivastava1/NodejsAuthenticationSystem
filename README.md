@@ -47,6 +47,40 @@ application
 
 ## Screenshot
 
+<img width="1512" alt="Screenshot 2023-12-01 at 2 21 32 AM" src="https://github.com/PrateekSrivastava1/NodejsAuthenticationSystem/assets/65366517/aa36aea6-056f-4551-9684-ea5e6a65e0ce">
+<img width="1512" alt="Screenshot 2023-12-01 at 2 20 49 AM" src="https://github.com/PrateekSrivastava1/NodejsAuthenticationSystem/assets/65366517/53fa6111-154b-47c3-8c5c-750b109ba368">
+<img width="1512" alt="Screenshot 2023-12-01 at 2 20 10 AM" src="https://github.com/PrateekSrivastava1/NodejsAuthenticationSystem/assets/65366517/8cddcabe-110d-492b-97e0-d5e2b470c9c2">
+<img width="1512" alt="Screenshot 2023-12-01 at 2 19 12 AM" src="https://github.com/PrateekSrivastava1/NodejsAuthenticationSystem/assets/65366517/4a0c5660-0a6f-4bf1-920a-fab92d7f3c07">
+<img width="1512" alt="Screenshot 2023-12-01 at 2 19 00 AM" src="https://github.com/PrateekSrivastava1/NodejsAuthenticationSystem/assets/65366517/c575d034-5a1f-40bf-8440-a9eca1a4bfef">
+<img width="1512" alt="Screenshot 2023-12-01 at 2 39 44 AM" src="https://github.com/PrateekSrivastava1/NodejsAuthenticationSystem/assets/65366517/d6de13fc-2342-4bcb-b9f9-618cb7efc827">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Folder Structure
 
 ```plaintext
@@ -73,9 +107,5 @@ NodejsAuthenticationSystem/
 |__ index.js
 |__ server.js
 |__ combined.log
-
-```
-
-```
 
 ```
