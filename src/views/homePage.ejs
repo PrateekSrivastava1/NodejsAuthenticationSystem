@@ -1,0 +1,62 @@
+<h1
+  class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+>
+  Welcome to Home Page
+</h1>
+<form id="logoutButton" method="GET">
+  <button
+    type="submit"
+    class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+  >
+    Log out
+  </button>
+</form>
+
+<form id="resetPasswordButton" action="/api/users/resetPassword" method="GET">
+  <button
+    type="submit"
+    class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+  >
+    Reset password
+  </button>
+</form>
+
+<script>
+  const form = document.getElementById('logoutButton');
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    let isValid = true;
+
+    let successFullSignUp = false;
+
+    // function to render signup page on successfull logout
+    const renderSignUpPage = () => {
+      fetch('/api/users/signup', {
+        method: 'GET'
+      })
+        .then(response => {
+          console.log('signup page rendered');
+        })
+        .catch(error => {
+          console.error('Error occurred during homepage rendering:', error);
+        });
+    };
+
+    fetch('/api/users/logout', {
+      method: 'GET'
+    })
+      .then(response => {
+        console.log(response);
+        if (response.ok) {
+          window.location.href = '/api/users/signup';
+          renderSignUpPage();
+        } else {
+          console.error('Logout failed:', response);
+        }
+      })
+      .catch(error => {
+        console.error('Error occurred during logout:', error);
+      });
+  });
+</script>

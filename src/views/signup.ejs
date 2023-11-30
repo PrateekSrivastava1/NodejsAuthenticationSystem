@@ -1,0 +1,189 @@
+<!-- Background section -->
+<div class="bg-gray-100"></div>
+<div class="max-w-md mx-auto py-12">
+  <h2 class="text-2xl font-bold mb-6 text-center">User Signup</h2>
+
+  <form
+    id="signupForm"
+    method="post"
+    class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+  >
+    <div class="mb-4">
+      <!-- Name Input -->
+      <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name:</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        minlength="3"
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      />
+      <div class="text-red-500 text-xs italic" id="nameError"></div>
+    </div>
+
+    <!-- Email Input -->
+    <div class="mb-4">
+      <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      />
+      <div class="text-red-500 text-xs italic" id="emailError"></div>
+    </div>
+
+    <!-- Password Input -->
+    <div class="mb-6">
+      <label for="password" class="block text-gray-700 text-sm font-bold mb-2"
+        >Password:</label
+      >
+      <input
+        type="password"
+        id="password"
+        name="password"
+        required
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      />
+      <div class="text-red-500 text-xs italic" id="passwordError"></div>
+    </div>
+
+    <!-- Confirm Password Input -->
+    <div class="mb-6">
+      <label for="password" class="block text-gray-700 text-sm font-bold mb-2"
+        >Confirm Password:</label
+      >
+      <input
+        type="password"
+        id="confirmPassword"
+        name="confirmPassword"
+        required
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      />
+      <div class="text-red-500 text-xs italic" id="confirmPasswordError"></div>
+    </div>
+
+    <!-- Signup Button -->
+    <input
+      type="submit"
+      value="Sign Up"
+      class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+    />
+  </form>
+
+  <!-- Signup with Google Button -->
+  <div class="flex justify-center mt-6 mb-6">
+    <a
+      href="/auth/google"
+      class="bg-blue-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+    >
+      <span>Signup with Google</span>
+    </a>
+  </div>
+  <!-- Signin Button -->
+  <form action="/api/users/signin" method="GET">
+    <button
+      type="submit"
+      class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+    >
+      Sigin
+    </button>
+  </form>
+</div>
+
+<script>
+  // Validation script
+  const form = document.getElementById('signupForm');
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    let isValid = true;
+
+    // Validate name
+    const nameInput = document.getElementById('name');
+    if (nameInput.value.length < 3) {
+      document.getElementById('nameError').textContent =
+        'The name should be at least 3 characters long';
+      isValid = false;
+    }
+
+    // Validate email
+    const emailInput = document.getElementById('email');
+    const emailRegex = /.+\@.+\../;
+    if (!emailRegex.test(emailInput.value)) {
+      document.getElementById('emailError').textContent = 'Please enter a valid email';
+      isValid = false;
+    }
+
+    // Validate password
+    const passwordInput = document.getElementById('password');
+    if (passwordInput.value.length === 0) {
+      document.getElementById('passwordError').textContent = 'Password is required';
+      isValid = false;
+    }
+
+    // Validate confirm password
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    if (confirmPasswordInput.value.length === 0) {
+      document.getElementById('confirmPasswordError').textContent =
+        'Confirm password is required';
+      isValid = false;
+    }
+
+    // Validate confirmPassword and password
+    if (confirmPasswordInput.value !== passwordInput.value) {
+      document.getElementById('confirmPasswordError').textContent =
+        'Above password is not same';
+      isValid = false;
+    }
+
+    if (!isValid) {
+      event.preventDefault();
+    }
+
+    let successFullSignUp = false;
+
+    // function to render signin page on successfull signup
+    const renderSigninPage = () => {
+      fetch('/api/users/signin', {
+        method: 'GET'
+      })
+        .then(response => {
+          console.log('signin rendered');
+        })
+        .catch(error => {
+          console.error('Error occurred during signin rendering:', error);
+        });
+    };
+    // creating form data to signup
+    const formData = {
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value
+    };
+
+    // Submit form data if valid
+    if (isValid) {
+      fetch('/api/users/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+        .then(response => {
+          if (response.status == 201) {
+            window.location.href = '/api/users/signin'; // Redirect to signin page on successful signup
+            renderSigninPage(); // Render signin page
+          } else {
+            console.error('Signup failed:', response);
+          }
+        })
+        .catch(error => {
+          console.error('Error occurred during signup:', error);
+        });
+    }
+  });
+</script>

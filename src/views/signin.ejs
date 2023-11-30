@@ -1,0 +1,122 @@
+<div class="bg-gray-100"></div>
+<div class="max-w-md mx-auto py-12">
+  <h2 class="text-2xl font-bold mb-6 text-center">User SignIn</h2>
+
+  <form
+    id="signinForm"
+    method="post"
+    class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+  >
+    <div class="mb-4">
+      <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      />
+      <div class="text-red-500 text-xs italic" id="emailError"></div>
+    </div>
+
+    <div class="mb-6">
+      <label for="password" class="block text-gray-700 text-sm font-bold mb-2"
+        >Password:</label
+      >
+      <input
+        id="password"
+        name="password"
+        type="password"
+        required
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      />
+      <div class="text-red-500 text-xs italic" id="passwordError"></div>
+    </div>
+
+    <input
+      type="submit"
+      value="Sign In"
+      class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+    />
+  </form>
+</div>
+
+<script>
+  // Validation script
+  const form = document.getElementById('signinForm');
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    let isValid = true;
+
+    // Validate email
+    const emailInput = document.getElementById('email');
+    const emailRegex = /.+\@.+\../;
+    if (!emailRegex.test(emailInput.value)) {
+      document.getElementById('emailError').textContent = 'Please enter a valid email';
+      isValid = false;
+    }
+
+    // Validate password
+    const passwordInput = document.getElementById('password');
+    if (passwordInput.value.length === 0) {
+      document.getElementById('passwordError').textContent = 'Password is required';
+      isValid = false;
+    }
+
+    if (!isValid) {
+      event.preventDefault();
+    }
+
+    let successFullSignUp = false;
+
+    // function to render homepage on successfull signup/signin
+    const renderHomePage = () => {
+      fetch('/api/users/homePage', {
+        method: 'GET'
+      })
+        .then(response => {
+          console.log('homepage rendered');
+        })
+        .catch(error => {
+          console.error('Error occurred during homepage rendering:', error);
+        });
+    };
+
+    const formData = {
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value
+    };
+
+    // signin only when data is valid
+    if (isValid) {
+      fetch('/api/users/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+        .then(response => {
+          console.log(response);
+          if (response.status == 201) {
+            window.location.href = '/api/users/homePage';
+            renderHomePage();
+          } else {
+            return response.json();
+          }
+        })
+        .then(errorData => {
+          if (errorData) {
+            console.error('Login failed:', errorData.msg);
+            isValid = true;
+            document.getElementById('passwordError').textContent = errorData.msg;
+            document.getElementById('emailError').textContent = errorData.msg;
+          }
+        })
+        .catch(error => {
+          console.error('Network error occurred during login:', error);
+        });
+    }
+  });
+</script>
