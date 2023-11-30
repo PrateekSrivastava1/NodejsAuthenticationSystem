@@ -19,6 +19,7 @@ application
 - Reset password after sign in
 - Store encrypted password in database
 - Google login/signup (Social authentication)
+- Passport to maintain sessions
 - Reset password using OTP sent on your email
 - Display notifications for:
   : Unmatching passwords during sign up
